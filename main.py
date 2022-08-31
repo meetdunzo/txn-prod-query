@@ -19,11 +19,12 @@ def main(request):
 
 def query_for_updating_records(record_size):
     query_prefix = 'UPDATE transactions_transaction SET status = \'failed\', failed_by = \'CRON\' WHERE id IN ( '
-    query_suffix_1 = 'SELECT id FROM transactions_transaction WHERE ( '
-    query_suffix_2 = 'status=\'initiated\' AND DATE(created_on) < \'2022-08-20\' AND type <> \'REFUND\''
-    query_suffix_3 = ' ) LIMIT {}'.format(record_size)
+    query_suffix_1 = 'SELECT id FROM transactions_transaction WHERE (( '
+    query_suffix_2 = 'status=\'initiated\' OR status = \'checksum_verified\' OR status = \'generated_checksum\' ) '
+    query_suffix_3 = 'AND DATE(created_on) < \'2022-08-20\' AND type <> \'REFUND\''
+    query_suffix_4 = ' ) LIMIT {}'.format(record_size)
     query_end = " );"
-    query = query_prefix + query_suffix_1 + query_suffix_2 + query_suffix_3 + query_end
+    query = query_prefix + query_suffix_1 + query_suffix_2 + query_suffix_3 + query_suffix_4 + query_end
     return query
 
 
