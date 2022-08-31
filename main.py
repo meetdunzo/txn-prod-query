@@ -3,13 +3,14 @@ import logging
 import os
 
 RECORD_SIZE = 10000
+NO_OF_TIMES = 2
 
 def main(request):
     try:
         write_db_conn = get_write_db_connection()
         record_size = RECORD_SIZE
         update_query = query_for_updating_records(record_size)
-        for x in range(2):
+        for x in range(NO_OF_TIMES):
             run_query(update_query, write_db_conn)
 
         write_db_conn.close()
